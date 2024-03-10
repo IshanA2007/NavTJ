@@ -116,6 +116,20 @@ Scaffold profileInfo(MyHomePageState state, String? profileEmail, String? name){
 
       ],)));
 }
+Future<void> signout(BuildContext context, MyHomePageState state) async {
+  //await Firebase.initializeApp();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  await auth.signOut();
+  await googleSignIn.signOut();
+
+  state.setState(() {
+    state.profileEmail = 'Unknown';
+    state.userDisplayName = 'Unknown';
+    state.fcpsLogIn=false;
+  });
+}
+
 Scaffold loginPage(MyHomePageState state){
   TextStyle contentStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2);
   TextStyle titleStyle = const TextStyle(fontFamily: 'Oswald', fontSize: 50);
@@ -183,19 +197,7 @@ Future<void> signup(BuildContext context, MyHomePageState state) async {
     // for go to the HomePage screen
   }
 }
-Future<void> signout(BuildContext context, MyHomePageState state) async {
-  //await Firebase.initializeApp();
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  await auth.signOut();
-  await googleSignIn.signOut();
 
-  state.setState(() {
-    state.profileEmail = 'Unknown';
-    state.userDisplayName = 'Unknown';
-    state.fcpsLogIn=false;
-  });
-}
 Widget buildLocationInfoScreen(HotColdState state, Location loc, int num){
   TextStyle contentStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2, fontWeight: FontWeight.bold);
   TextStyle textStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2);

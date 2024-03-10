@@ -11,10 +11,10 @@ import 'main.dart';
 //TODO: test isInRange - line 100, add back fcpsLogIn- line 15
 //add 3d anims??? .gib files???
 Container freshMode1(MyHomePageState state){
-  //print(state.fcpsLogIn.toString());
-  // if(state.fcpsLogIn==false){
-  //   return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('Please Log In with FCPS'));
-  // }
+  print(state.fcpsLogIn.toString());
+  if(state.fcpsLogIn==false){
+    return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('Please Log In with FCPS'));
+  }
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.all(50),
@@ -73,6 +73,7 @@ class HotColdState extends State<freshModeHotCold>{
               else {state.setState(() {
                 state.isInRange = false;
               });}
+
             }
           });
         }
@@ -97,9 +98,9 @@ class HotColdState extends State<freshModeHotCold>{
   TextStyle contentBig = TextStyle(fontFamily: 'Oswald', fontSize: 20);
   @override
   Widget build(BuildContext context) {
-    // if(state.isInRange==false){//TODO ADD ISINRANGE BACK
-    //   return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('You are not close enough to TJHSST'));
-    // }
+    if(state.isInRange==false){
+      return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('You are not close enough to TJHSST'));
+    }
     if(displayLocInfoScreen==true){
       return buildLocationInfoScreen(this, infoScreenLocation, whichSearch);
     }

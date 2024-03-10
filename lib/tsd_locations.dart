@@ -91,7 +91,7 @@ Widget buildLottie(bool searchMode, bool searchMode2, double distance, double to
   double distanceCalibrate = distance/totalDist;//TODO scale to distance to location
   if (distanceCalibrate>1) distanceCalibrate=1;
   Color hotColdColor = Colors.black;
-  Color? lottieColor = Color.lerp(Colors.red, Colors.blue, distanceCalibrate);
+  Color? lottieColor = Color.lerp(Colors.green, Colors.red, distanceCalibrate);
   lottieColor==null? hotColdColor=Colors.black: hotColdColor=lottieColor;
 
   if (!searchMode && !searchMode2) {
