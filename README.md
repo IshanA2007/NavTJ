@@ -1,16 +1,45 @@
-# tj_scavenger_draft
+# 🧠 NavTJ
 
-Tis ONLY a draft :)
+## 📌 Overview
+NavTJ is a Flutter-based navigation app intended to help students at the Thomas Jefferson High School get to their classes without getting lost. The halls of TJ can be confusing, so NavTJ uses pathfinding and geolocation to direct users to their classes in the most efficient way possible.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
+- ✅ Live Direction
+- ✅ Hot-cold Distance Display
+- ✅ Dynamic Rerouting
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Technologies Used
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Area            | Stack/Tools                                   |
+|-----------------|-----------------------------------------------|
+| Backend         | Dart, C++, Python                             |
+| Frontend        | Flutter                                       |
+| Database        | SQLLite                                       |
+| Other Tools     | Git, Figma                                    |
+
+---
+
+## 📷 What We Learned
+- Full-stack development using Flutter
+- Mobile design with Figma
+- Version control via Git
+- Utilizing pathfinding algorithms
+
+---
+
+## 🧪 How to Run Locally
+
+```bash
+# Clone repo
+git clone https://github.com/IshanA2007/NavTJ.git
+cd navtj
+
+# Ensure the Flutter SDK is installed
+flutter doctor
+
+# Run app 
+flutter run
