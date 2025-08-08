@@ -7,6 +7,7 @@ import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'backendStuff.dart';
+import 'package:geolocator/geolocator.dart';
 
 Scaffold howitworks1(MyHomePageState state){
   TextStyle contentStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2);
@@ -115,6 +116,20 @@ Scaffold profileInfo(MyHomePageState state, String? profileEmail, String? name){
 
       ],)));
 }
+Future<void> signout(BuildContext context, MyHomePageState state) async {
+  //await Firebase.initializeApp();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  await auth.signOut();
+  await googleSignIn.signOut();
+
+  state.setState(() {
+    state.profileEmail = 'Unknown';
+    state.userDisplayName = 'Unknown';
+    state.fcpsLogIn=false;
+  });
+}
+
 Scaffold loginPage(MyHomePageState state){
   TextStyle contentStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2);
   TextStyle titleStyle = const TextStyle(fontFamily: 'Oswald', fontSize: 50);
@@ -182,19 +197,7 @@ Future<void> signup(BuildContext context, MyHomePageState state) async {
     // for go to the HomePage screen
   }
 }
-Future<void> signout(BuildContext context, MyHomePageState state) async {
-  //await Firebase.initializeApp();
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  await auth.signOut();
-  await googleSignIn.signOut();
 
-  state.setState(() {
-    state.profileEmail = 'Unknown';
-    state.userDisplayName = 'Unknown';
-    state.fcpsLogIn=false;
-  });
-}
 Widget buildLocationInfoScreen(HotColdState state, Location loc, int num){
   TextStyle contentStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2, fontWeight: FontWeight.bold);
   TextStyle textStyle = const TextStyle(color: Colors.black, fontFamily: 'SourceCodePro', fontSize: 15, height: 1.2);
@@ -230,11 +233,9 @@ Widget buildLocationInfoScreen(HotColdState state, Location loc, int num){
                 state.searchMode = false;
                 List<String> temp = [state.currentLoc.roomNum, state.destination.roomNum];
                 List<String> li =dij(temp);
-                state.directions = "";
-                for(var i = 0; i < li.length; i++){
-                  state.directions+=li[i];
-                }
-                //state.distance = //TARGET
+                state.directions = li;
+                state.distBtwLocNTarget = Geolocator.distanceBetween(state.currentLoc.latitude, state.currentLoc.longitude, state.destination.latitude, state.destination.longitude);
+
               });},
               child: Ink( padding: const EdgeInsets.all(13), decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Color(0xFFEE7674)),
                   child:  Text(yesButtonText,  style:  const TextStyle(color: Color(0xFFEFE0CB), fontFamily: 'SourceCodePro', fontSize: 20)))),
@@ -255,15 +256,10 @@ Widget buildLocationInfoScreen(HotColdState state, Location loc, int num){
                   state.displayLocInfoScreen=false;
                   state.searchMode2 = false;
                   state.searchMode = false;
-                  print("JOJO");
-                  List<String> temp = [state.currentLoc.roomNum, state.destination.roomNum];
-                  List<String> li =dij(temp);
-                  print(li.elementAt(0));
-                  print(li.elementAt(1));
-                  state.directions = "";
-                  for(var i = 0; i < li.length; i++){
-                    state.directions+=li[i];
-                  }
+                  // List<String> temp = [state.currentLoc.roomNum, state.destination.roomNum];
+                  // List<String> li =dij(temp);
+                  // state.directions = li;
+                  // state.distBtwLocNTarget = Geolocator.distanceBetween(state.currentLoc.latitude, state.currentLoc.longitude, state.destination.latitude, state.destination.longitude);
               });},
               child: Ink( padding: const EdgeInsets.all(13), decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color(0xFFEE7674)),
                   child: const Text('Cancel',  style:  TextStyle(color: Color(0xFFEFE0CB), fontFamily: 'SourceCodePro', fontSize: 20)))),

@@ -8,17 +8,13 @@ import 'tsd_infoscreens.dart';
 import 'main.dart';
 
 
-//TODO: encapsulate search bar in statless widget to be efficient
-//TODO: delete padding around lottie,Change altitude to say 'floor', calibrate coloration (quadratic?)
-
-//TODO: check geolocater package for platform-specific-settings AND ASK FOR PERMISSIONS
-//TODO: textual directions, sql database (sqflite)
+//TODO: test isInRange - line 100, add back fcpsLogIn- line 15
 //add 3d anims??? .gib files???
 Container freshMode1(MyHomePageState state){
-  //print(state.fcpsLogIn.toString());
-  // if(state.fcpsLogIn==false){
-  //   return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('Please Log In with FCPS'));
-  // }
+  print(state.fcpsLogIn.toString());
+  if(state.fcpsLogIn==false){
+    return Container(padding: const EdgeInsets.all(20), alignment: Alignment.center, child: buildTypeWriter('Please Log In with FCPS'));
+  }
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.all(50),
@@ -47,8 +43,9 @@ class HotColdState extends State<freshModeHotCold>{
   String positionData = 'Loading...';
   String distanceToTargetText = 'Loading...';
   double distance = 0.0;
+  double distBtwLocNTarget = 1;
   double distanceFromSchool = 0.0;
-  String directions ="Loading directions...";
+  List<String> directions =["Your current location and destination are both super close to Nobel Commons, try looking around!"];
 
   bool displayLocInfoScreen = false;
   int whichSearch = 1;
@@ -76,6 +73,7 @@ class HotColdState extends State<freshModeHotCold>{
               else {state.setState(() {
                 state.isInRange = false;
               });}
+
             }
           });
         }
@@ -106,15 +104,19 @@ class HotColdState extends State<freshModeHotCold>{
     if(displayLocInfoScreen==true){
       return buildLocationInfoScreen(this, infoScreenLocation, whichSearch);
     }
-    return ListView( shrinkWrap: true,
+    return Column( crossAxisAlignment: CrossAxisAlignment.start,
       children: [Row(children:[MaterialButton(child: whichIcon(searchMode2), onPressed: customShowSearch2,),buildTextBox(searchMode2, this, 2)]),
-        Text('Current Location: ${currentLoc.roomNum}', style: contentBig),buildLocList(searchMode2, query2, this, 2),
+        Text('Current Location: ${currentLoc.roomNum}', style: contentBig),Container(padding: EdgeInsets.only(top:15),child:buildLocList(searchMode2, query2, this, 2)),
         Row(children:[MaterialButton(child: whichIcon(searchMode), onPressed: customShowSearch,),buildTextBox(searchMode, this, 1)]),
         Text('Destination: ${destination.roomNum}', style: contentBig), buildLocList(searchMode, query, this, 1),
-        Text(positionData),
+        Container( child:Text(positionData), padding:EdgeInsets.only(top:15)),
         Text(distanceToTargetText),
-        Text(directions),
-        buildLottie(searchMode, searchMode2, distance),
+        Container(child:Text("Directions (swipe right):", style:contentBig), padding: EdgeInsets.only(top:15)),
+        Container(height:150, child: PageView.builder(itemCount: directions.length, itemBuilder: (context, index) {
+          int stepIndex = index + 1;
+          return ListView(children: [Text('Step $stepIndex'),Text('${directions[index]}')]);
+        })),
+        buildLottie(searchMode, searchMode2, distance, distBtwLocNTarget),
         ],
     );
   }
@@ -176,10 +178,10 @@ Widget buildTypeWriter(String text){
 
   return IgnorePointer(child:  AnimatedTextKit(
       animatedTexts: [
-        TypewriterAnimatedText(
+        ScaleAnimatedText(
             text,
             textStyle: typerStyle,
-            speed: const Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 1000),
             textAlign: TextAlign.center
         ),
       ],
